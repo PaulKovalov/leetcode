@@ -1,3 +1,8 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+using std::min;
+using std::max;
 class Solution {
 public:
     typedef vector<vector<int>> vvi;
