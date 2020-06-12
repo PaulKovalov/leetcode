@@ -7,52 +7,6 @@ using namespace std;
 class Solution {
 public:
     typedef vector<vector<char>> board;
-    bool check(board& b, int i, int j) {
-        board used(b.size(), vector<char>(b[0].size(), 0));
-        queue<pair<int, int>> q;
-        q.push(make_pair(i, j));
-        while(!q.empty()) {
-            pair<int, int> top = q.front();
-            q.pop();
-            i = top.first;
-            j = top.second;
-            if (i == 0 || i == b.size() - 1 || j == 0 || j == b[i].size() - 1) {
-                return false;
-            }
-            
-            used[i][j] = true;
-            if (b[i - 1][j] == 'O' && !used[i - 1][j])
-                q.push(make_pair(i - 1, j));
-            if (b[i + 1][j] == 'O' && !used[i + 1][j])
-                q.push(make_pair(i + 1, j));
-            if (b[i][j - 1] == 'O' && !used[i][j - 1])
-                q.push(make_pair(i, j - 1));
-            if (b[i][j + 1] == 'O' && !used[i][j + 1])
-                q.push(make_pair(i, j + 1));
-        }
-        return true;
-    }
-
-    void color(board& b, int i, int j) {
-        queue<pair<int, int>> q;
-        q.push(make_pair(i, j));
-        while(!q.empty()) {
-            pair<int, int> top = q.front();
-            q.pop();
-            i = top.first;
-            j = top.second;
-            b[i][j] = 'X';
-            cout << "color " << i <<  " " << j << endl;
-            if (b[i - 1][j] == 'O' && i - 1 > 0)
-                q.push(make_pair(i - 1, j));
-            if (b[i + 1][j] == 'O' && i + 1 < b.size())
-                q.push(make_pair(i + 1, j));
-            if (b[i][j - 1] == 'O' && j - 1 > 0)
-                q.push(make_pair(i, j - 1));
-            if (b[i][j + 1] == 'O' && j + 1 < b[i].size())
-                q.push(make_pair(i, j + 1));
-        }
-    }
 
     void bad(board& bb, board& b, int i, int j) {
         queue<pair<int, int>> q;
@@ -89,16 +43,13 @@ public:
         for (int i = 0; i < board[0].size(); ++i){
             if (board[0][i] == 'O')
                 bad(bb, board, 0, i);
-            if (board.back()[0] == 'O')
+            if (board.back()[i] == 'O')
                 bad(bb, board, board.size() - 1, i);
         }
         for (int i = 1; i < board.size() - 1; ++i) {
             for (int j = 1; j < board[i].size() - 1; ++j) {
                 if (board[i][j] == 'O' && !bb[i][j]) {
-                    if (check(board, i, j))
-                        color(board, i, j);
-                    else
-                        bad(bb, board, i, j);
+                    board[i][j] = 'X';
                 }
             }
         }
