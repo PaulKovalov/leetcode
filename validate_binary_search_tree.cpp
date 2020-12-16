@@ -27,3 +27,22 @@ public:
         return true;
     }
 };
+
+
+class Solution {
+public:
+    typedef long long ull;
+
+    bool helper(TreeNode* root, ull l, ull r) {
+        if (root == nullptr) {
+            return true;
+        }
+        if (root->val <= l || root->val >= r) {
+            return false;
+        }
+        return helper(root->right, root->val, r) && helper(root->left, l, root->val);
+    }
+    bool isValidBST(TreeNode* root) {
+        return helper(root, numeric_limits<ull>::min(), numeric_limits<ull>::max());
+    }
+};
